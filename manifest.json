@@ -1,0 +1,22 @@
+{
+  "name": "إحياء سنة",
+  "short_name": "إحياء سنة",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#06152f",
+  "theme_color": "#06152f",
+  "dir": "rtl",
+  "lang": "ar",
+  "icons": [
+    {
+      "src": "assets/logo.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "assets/logo.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
