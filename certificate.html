@@ -6,94 +6,24 @@
 <title>شهادة سفير إحياء السنة</title>
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;
-  background:#06152f;
-  font-family:Tahoma,Arial,sans-serif;
-  color:#06152f;
-}
-.wrap{
-  max-width:1200px;
-  margin:auto;
-  padding:18px;
-  text-align:center;
-}
-.controls{
-  background:#fff;
-  border-radius:18px;
-  padding:14px;
-  margin-bottom:14px;
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  flex-wrap:wrap;
-  box-shadow:0 8px 24px #0003;
-}
-input{
-  padding:12px 16px;
-  border:1px solid #d7dce3;
-  border-radius:14px;
-  font-size:17px;
-  min-width:280px;
-  text-align:center;
-}
-button{
-  border:0;
-  border-radius:14px;
-  padding:12px 18px;
-  background:#d4a43b;
-  color:#06152f;
-  font-weight:bold;
-  font-size:16px;
-  cursor:pointer;
-}
-.certBox{
-  position:relative;
-  display:inline-block;
-  max-width:100%;
-  background:#fffaf0;
-  box-shadow:0 10px 38px #0007;
-}
-.certBox img{
-  display:block;
-  width:100%;
-  height:auto;
-  max-width:1150px;
-}
-.nameOverlay{
-  position:absolute;
-  top:41.8%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  font-size:30px;
-  font-weight:bold;
-  color:#06152f;
-  width:52%;
-  text-align:center;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-.dateOverlay{
-  position:absolute;
-  bottom:10.1%;
-  left:14%;
-  font-size:19px;
-  font-weight:bold;
-  color:#06152f;
-}
+body{margin:0;background:#06152f;font-family:Tahoma,Arial,sans-serif;color:#06152f}
+.wrap{max-width:1200px;margin:auto;padding:18px;text-align:center}
+.controls{background:#fff;border-radius:18px;padding:14px;margin-bottom:14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;box-shadow:0 8px 24px #0003}
+input{padding:12px 16px;border:1px solid #d7dce3;border-radius:14px;font-size:17px;min-width:280px;text-align:center}
+button{border:0;border-radius:14px;padding:12px 18px;background:#d4a43b;color:#06152f;font-weight:bold;font-size:16px;cursor:pointer}
+.certBox{position:relative;display:inline-block;max-width:100%;background:#fffaf0;box-shadow:0 10px 38px #0007}
+.certBox img{display:block;width:100%;height:auto;max-width:1150px}
+.nameOverlay{position:absolute;top:34.7%;left:50%;transform:translate(-50%,-50%);font-size:28px;font-weight:bold;color:#06152f;width:50%;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dateOverlay{position:absolute;bottom:9.3%;left:13.5%;font-size:18px;font-weight:bold;color:#06152f}
+.errorBox{display:none;background:#fff;color:#06152f;border-radius:18px;padding:18px;max-width:700px;margin:20px auto;line-height:2}
 @media(max-width:700px){
-  .wrap{padding:6px}
-  .controls{margin:6px;padding:10px}
-  .nameOverlay{font-size:13px;top:41.8%;width:54%}
-  .dateOverlay{font-size:9px;bottom:10.1%;left:13.5%}
+ .wrap{padding:6px}.controls{margin:6px;padding:10px}
+ .nameOverlay{font-size:12px;top:34.7%;width:54%}
+ .dateOverlay{font-size:8px;bottom:9.3%;left:13.5%}
 }
 @media print{
-  body{background:white}
-  .controls{display:none}
-  .wrap{padding:0}
-  .certBox{box-shadow:none;max-width:100%}
-  .certBox img{max-width:100%;width:100%}
+ body{background:white}.controls,.errorBox{display:none}.wrap{padding:0}
+ .certBox{box-shadow:none;max-width:100%}.certBox img{max-width:100%;width:100%}
 }
 </style>
 </head>
@@ -106,9 +36,13 @@ button{
   </div>
 
   <div class="certBox">
-    <img src="certificate_template.png" alt="شهادة سفير إحياء السنة">
+    <img id="certImg" alt="شهادة سفير إحياء السنة">
     <div class="nameOverlay" id="nameText">اسم المشاركة</div>
     <div class="dateOverlay" id="dateText"></div>
+  </div>
+
+  <div class="errorBox" id="errorBox">
+    لم تظهر صورة الشهادة. تأكدي أن ملف <b>certificate_template.png</b> موجود في GitHub بجانب ملف <b>certificate.html</b> أو داخل مجلد <b>certificates</b>.
   </div>
 </div>
 
@@ -125,10 +59,28 @@ function setName(){
   localStorage.setItem('ihyaa_cert_name',v);
 }
 let saved=localStorage.getItem('ihyaa_cert_name');
-if(saved){
-  document.getElementById('name').value=saved;
-}
+if(saved){document.getElementById('name').value=saved;}
 setName();
+
+/* تحميل الصورة مع عدة مسارات احتياطية لكسر مشكلة المجلد أو الكاش */
+const certImg=document.getElementById('certImg');
+const version='v=' + Date.now();
+const sources=[
+  'certificate_template.png?'+version,
+  './certificate_template.png?'+version,
+  'certificates/certificate_template.png?'+version,
+  './certificates/certificate_template.png?'+version
+];
+let idx=0;
+function tryLoad(){
+  if(idx>=sources.length){
+    document.getElementById('errorBox').style.display='block';
+    return;
+  }
+  certImg.src=sources[idx++];
+}
+certImg.onerror=tryLoad;
+tryLoad();
 </script>
 </body>
 </html>
