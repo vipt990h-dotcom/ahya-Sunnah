@@ -1,7 +1,134 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-<defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#d4a43b"/><stop offset="1" stop-color="#b88722"/></linearGradient></defs>
-<rect width="512" height="512" rx="96" fill="#06152f"/>
-<circle cx="256" cy="210" r="130" fill="none" stroke="url(#g)" stroke-width="18"/>
-<text x="256" y="235" text-anchor="middle" font-size="76" font-family="Arial">🏆</text>
-<text x="256" y="385" text-anchor="middle" fill="#fffaf0" font-size="38" font-weight="bold" font-family="Tahoma,Arial">وسام القائد النبوي</text>
-</svg>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>شهادة سفير إحياء السنة</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#06152f;
+  font-family:Tahoma,Arial,sans-serif;
+  color:#06152f;
+}
+.wrap{
+  max-width:1200px;
+  margin:auto;
+  padding:18px;
+  text-align:center;
+}
+.controls{
+  background:#fff;
+  border-radius:18px;
+  padding:14px;
+  margin-bottom:14px;
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+  box-shadow:0 8px 24px #0003;
+}
+input{
+  padding:12px 16px;
+  border:1px solid #d7dce3;
+  border-radius:14px;
+  font-size:17px;
+  min-width:280px;
+  text-align:center;
+}
+button{
+  border:0;
+  border-radius:14px;
+  padding:12px 18px;
+  background:#d4a43b;
+  color:#06152f;
+  font-weight:bold;
+  font-size:16px;
+  cursor:pointer;
+}
+.certBox{
+  position:relative;
+  display:inline-block;
+  max-width:100%;
+  background:#fffaf0;
+  box-shadow:0 10px 38px #0007;
+}
+.certBox img{
+  display:block;
+  width:100%;
+  height:auto;
+  max-width:1150px;
+}
+.nameOverlay{
+  position:absolute;
+  top:41.8%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:30px;
+  font-weight:bold;
+  color:#06152f;
+  width:52%;
+  text-align:center;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.dateOverlay{
+  position:absolute;
+  bottom:10.1%;
+  left:14%;
+  font-size:19px;
+  font-weight:bold;
+  color:#06152f;
+}
+@media(max-width:700px){
+  .wrap{padding:6px}
+  .controls{margin:6px;padding:10px}
+  .nameOverlay{font-size:13px;top:41.8%;width:54%}
+  .dateOverlay{font-size:9px;bottom:10.1%;left:13.5%}
+}
+@media print{
+  body{background:white}
+  .controls{display:none}
+  .wrap{padding:0}
+  .certBox{box-shadow:none;max-width:100%}
+  .certBox img{max-width:100%;width:100%}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="controls">
+    <input id="name" placeholder="اكتبي اسم المشاركة">
+    <button onclick="setName()">تحديث الاسم</button>
+    <button onclick="window.print()">طباعة / حفظ PDF</button>
+  </div>
+
+  <div class="certBox">
+    <img src="certificate_template.png" alt="شهادة سفير إحياء السنة">
+    <div class="nameOverlay" id="nameText">اسم المشاركة</div>
+    <div class="dateOverlay" id="dateText"></div>
+  </div>
+</div>
+
+<script>
+function today(){
+  const d=new Date();
+  return d.toLocaleDateString('ar-SA');
+}
+document.getElementById('dateText').textContent=today();
+
+function setName(){
+  const v=document.getElementById('name').value.trim() || localStorage.getItem('ihyaa_cert_name') || 'اسم المشاركة';
+  document.getElementById('nameText').textContent=v;
+  localStorage.setItem('ihyaa_cert_name',v);
+}
+let saved=localStorage.getItem('ihyaa_cert_name');
+if(saved){
+  document.getElementById('name').value=saved;
+}
+setName();
+</script>
+</body>
+</html>
