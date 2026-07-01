@@ -181,7 +181,7 @@ function waitMessage(ms){
 }
 function canOpenDay(dayIndex){
   if(ADMIN_MODE) return true;
-  if(dayIndex<=0) return true;
+  if(dayIndex<=5) return true; // فتح الأيام حتى اليوم السادس
   let prev=dayIndex-1;
   if(!state.completed.includes(prev)) return false;
   let t=(state.completionTimes||{})[prev]||0;
